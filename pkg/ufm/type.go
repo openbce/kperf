@@ -39,7 +39,7 @@ type IBNetwork struct {
 
 type PKey struct {
 	Partition string `json:"partition"`
-	IpOverIb  bool   `json:"ip_over_ib"`
+	IPoIB     bool   `json:"ip_over_ib"`
 	Qos       struct {
 		ServiceLevel int32   `json:"service_level"`
 		MTU          int32   `json:"mtu_limit"`

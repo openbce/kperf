@@ -69,7 +69,7 @@ func buildIBNetwork(pkey int32, param *PKey) *IBNetwork {
 		EnableSharp:  false,
 		GUIDs:        guids,
 		MTU:          param.Qos.MTU,
-		IPOverIB:     param.IpOverIb,
+		IPOverIB:     param.IPoIB,
 		Index0:       index0,
 		ServiceLevel: param.Qos.ServiceLevel,
 		RateLimit:    param.Qos.RateLimit,
