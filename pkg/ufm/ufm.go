@@ -25,16 +25,13 @@ import (
 )
 
 type UFM struct {
-	PluginName  string
-	SpecVersion string
-	conf        UFMConfig
-	client      UFMClient
+	conf   UFMConfig
+	client UFMClient
 }
 
 const (
-	pluginName  = "ufm"
-	specVersion = "1.0"
-	httpsProto  = "https"
+	httpsProto = "https"
+	httpProto  = "http"
 )
 
 type UFMConfig struct {
@@ -75,28 +72,26 @@ func NewUFM() (*UFM, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create http ufmclient err: %v", err)
 	}
-	return &UFM{PluginName: pluginName,
-		SpecVersion: specVersion,
-		conf:        ufmConf,
-		client:      client}, nil
+	return &UFM{conf: ufmConf, client: client}, nil
 }
 
-func (u *UFM) Name() string {
-	return u.PluginName
-}
-
-func (u *UFM) Spec() string {
-	return u.SpecVersion
-}
-
-func (u *UFM) Validate() error {
-	_, err := u.client.Get(u.buildURL("/ufmRest/app/ufm_version"))
-
-	if err != nil {
-		return fmt.Errorf("failed to connect to ufm subnet manager: %v", err)
+func (u *UFM) Version() (string, *UFMError) {
+	ver := struct {
+		Version string `json:"ufm_release_version"`
+	}{}
+	data, ufmErr := u.client.Get(u.buildURL("/ufmRest/app/ufm_version"))
+	if ufmErr != nil {
+		return "", ufmErr
 	}
 
-	return nil
+	if err := json.Unmarshal(data, &ver); err != nil {
+		return "", &UFMError{
+			Code:    UnknownErr,
+			Message: err.Error(),
+		}
+	}
+
+	return ver.Version, nil
 }
 
 func (u *UFM) GetIBNetwork(pkey int32) (*IBNetwork, *UFMError) {
