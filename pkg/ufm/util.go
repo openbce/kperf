@@ -68,7 +68,7 @@ func buildIBNetwork(pkey int32, param *PKey) *IBNetwork {
 		PKey:         pkey,
 		EnableSharp:  false,
 		GUIDs:        guids,
-		MTU:          param.Qos.MTU,
+		MTU:          ParseMTU(param.Qos.MTU),
 		IPOverIB:     param.IPoIB,
 		Index0:       index0,
 		ServiceLevel: param.Qos.ServiceLevel,
@@ -98,4 +98,15 @@ func ParseStrategy(s string) Strategy {
 	}
 
 	return UnknownStrategy
+}
+
+func ParseMTU(mtu int32) int32 {
+	switch mtu {
+	case 2048, 2:
+		return 2
+	case 4096, 4:
+		return 4
+	default:
+		return 2
+	}
 }

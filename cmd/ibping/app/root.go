@@ -39,7 +39,7 @@ values are required to connect to the target UFM:
 `,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		
+
 	},
 }
 

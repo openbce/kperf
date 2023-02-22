@@ -151,7 +151,7 @@ func (u *UFM) patchQoS(ib *IBNetwork, _ Strategy) *UFMError {
 	}{
 		PKey:         pkey,
 		RateLimit:    ib.RateLimit,
-		MTU:          ib.MTU,
+		MTU:          ParseMTU(ib.MTU),
 		ServiceLevel: ib.ServiceLevel,
 	}
 

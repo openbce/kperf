@@ -79,7 +79,7 @@ func (c *ufmclient) Post(url string, body []byte) ([]byte, *UFMError) {
 }
 
 func (c *ufmclient) Put(url string, body []byte) ([]byte, *UFMError) {
-	log.Debug().Msgf("Http ufmclient POST: url %s,  body %s", url, string(body))
+	log.Debug().Msgf("Http ufmclient PUT: url %s,  body %s", url, string(body))
 	return c.executeRequest(http.MethodPut, url, body)
 }
 
