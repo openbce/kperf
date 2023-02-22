@@ -46,6 +46,7 @@ type IBPort struct {
 	GUID            string `json:"guid"`
 	SystemID        string `json:"systemID"`
 	Description     string `json:"description"`
+	SystemName      string `json:"system_name"`
 	NodeDescription string `json:"node_description"`
 	PhysicalState   string `json:"physical_state"`
 	LogicalState    string `json:"logical_state"`

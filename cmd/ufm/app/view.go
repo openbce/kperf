@@ -78,9 +78,9 @@ var viewCmd = &cobra.Command{
 		fmt.Printf("%-15s: %s\n", "GUIDs", strings.Join(ib.GUIDs, ","))
 		fmt.Printf("%-15s:\n", "Ports")
 		if len(ibPorts) != 0 {
-			fmt.Printf("    %-20s%-20s%-20s%-10s%-20s%-20s\n", "Name", "GUID", "SystemID", "LID", "LogicalState", "PhysicalState")
+			fmt.Printf("    %-20s%-20s%-20s%-15s%-15s%-10s%-20s%-20s\n", "Name", "GUID", "SystemID", "SystemName", "DName", "LID", "LogicalState", "PhysicalState")
 			for _, p := range ibPorts {
-				fmt.Printf("    %-20s%-20s%-20s%-10d%-20s%-20s\n", p.Name, p.GUID, p.SystemID, p.LID, p.LogicalState, p.PhysicalState)
+				fmt.Printf("    %-20s%-20s%-20s%-15s%-15s%-10d%-20s%-20s\n", p.Name, p.GUID, p.SystemID, p.SystemName, p.DName, p.LID, p.LogicalState, p.PhysicalState)
 			}
 		}
 
