@@ -129,7 +129,15 @@ func (u *UFM) GetIBNetwork(pkey int32) (*IBNetwork, *UFMError) {
 }
 
 func (u *UFM) CreateIBNetwork(ib *IBNetwork) *UFMError {
-	return u.addGuids(ib)
+	if ufmErr := u.addGuids(ib); ufmErr != nil {
+		return ufmErr
+	}
+
+	if ufmErr := u.Patch(ib, QoSField, AddStrategy); ufmErr != nil {
+		return ufmErr
+	}
+
+	return nil
 }
 
 func (u *UFM) patchQoS(ib *IBNetwork, _ Strategy) *UFMError {
