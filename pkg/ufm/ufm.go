@@ -336,30 +336,8 @@ func (u *UFM) addGuids(ib *IBNetwork) *UFMError {
 	return nil
 }
 
-func (u *UFM) GetPort(guid string) (*IBPort, *UFMError) {
-	if data, err := u.client.Get(u.buildURL(fmt.Sprintf("/ufmRest/resources/ports/%s", guid))); err != nil {
-		return nil, &UFMError{
-			Code:    UnknownErr,
-			Message: fmt.Sprintf("failed to list pkey with error: %v", err),
-		}
-	} else {
-		port := IBPort{}
-		if err := json.Unmarshal(data, &port); err != nil {
-			return nil, &UFMError{
-				Code:    UnknownErr,
-				Message: fmt.Sprintf("failed to unmarshal port with error: %v", err),
-			}
-		}
-		return &port, nil
-	}
-}
-
-type Filter struct {
-	GUIDs []string
-}
-
-func (u *UFM) ListPort(filter Filter) ([]*IBPort, *UFMError) {
-	if data, err := u.client.Get(u.buildURL(fmt.Sprintf("/ufmRest/resources/ports"))); err != nil {
+func (u *UFM) ListPort(guids ...string) ([]*IBPort, *UFMError) {
+	if data, err := u.client.Get(u.buildURL(fmt.Sprintf("/ufmRest/resources/ports?sys_type=Computer"))); err != nil {
 		return nil, &UFMError{
 			Code:    UnknownErr,
 			Message: fmt.Sprintf("failed to list pkey with error: %v", err),
@@ -376,15 +354,14 @@ func (u *UFM) ListPort(filter Filter) ([]*IBPort, *UFMError) {
 		var res []*IBPort
 		filtered := false
 
-		if len(filter.GUIDs) != 0 {
-			filtered = true
+		for _, p := range ports {
+			if len(guids) != 0 {
+				filtered = true
 
-			guidMap := make(map[string]struct{})
-			for _, g := range filter.GUIDs {
-				guidMap[g] = struct{}{}
-			}
-
-			for _, p := range ports {
+				guidMap := make(map[string]struct{})
+				for _, g := range guids {
+					guidMap[g] = struct{}{}
+				}
 				if _, found := guidMap[p.GUID]; found {
 					res = append(res, p)
 				}

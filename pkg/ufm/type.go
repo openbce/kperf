@@ -16,6 +16,10 @@ limitations under the License.
 
 package ufm
 
+const (
+	DefaultPKey int32 = 0x7fff
+)
+
 type IBNetwork struct {
 	// The name of IB network.
 	Name string `json:"name"`
@@ -47,10 +51,10 @@ type IBPort struct {
 	LogicalState    string `json:"logical_state"`
 	LID             int32  `json:"lid"`
 	Path            string `json:"path"`
-	Tier            string `json:"tier"`
+	Tier            int32  `json:"tier"`
 	MTU             int32  `json:"mtu"`
 	ActiveSpeed     string `json:"active_speed"`
-	DName           int32  `json:"dname"`
+	DName           string `json:"dname"`
 	Module          string `json:"module"`
 }
 

@@ -57,7 +57,16 @@ var viewCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		ibPorts, ufmErr := ufmClient.ListPort(ufm.Filter{GUIDs: ib.GUIDs})
+		guids := ib.GUIDs
+		if ib.PKey == ufm.DefaultPKey {
+			guids = nil
+		}
+
+		ibPorts, ufmErr := ufmClient.ListPort(guids...)
+		if ufmErr != nil {
+			fmt.Printf("Failed to get ports of IB network in UFM: %v\n", ufmErr)
+			os.Exit(1)
+		}
 
 		fmt.Printf("%-15s: %s\n", "Name", ib.Name)
 		fmt.Printf("%-15s: 0x%x\n", "Pkey", ib.PKey)
@@ -68,7 +77,7 @@ var viewCmd = &cobra.Command{
 		fmt.Printf("%-15s: %d\n", "Service Level", ib.ServiceLevel)
 		fmt.Printf("%-15s: %s\n", "GUIDs", strings.Join(ib.GUIDs, ","))
 		fmt.Printf("%-15s:\n", "Ports")
-		if len(ibPorts) == 0 {
+		if len(ibPorts) != 0 {
 			fmt.Printf("    %-20s%-20s%-20s%-10s%-20s%-20s\n", "Name", "GUID", "SystemID", "LID", "LogicalState", "PhysicalState")
 			for _, p := range ibPorts {
 				fmt.Printf("    %-20s%-20s%-20s%-10d%-20s%-20s\n", p.Name, p.GUID, p.SystemID, p.LID, p.LogicalState, p.PhysicalState)
