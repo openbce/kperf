@@ -37,6 +37,23 @@ type IBNetwork struct {
 	RateLimit float64 `json:"rate_limit"`
 }
 
+type IBPort struct {
+	Name            string `json:"name"`
+	GUID            string `json:"guid"`
+	SystemID        string `json:"systemID"`
+	Description     string `json:"description"`
+	NodeDescription string `json:"node_description"`
+	PhysicalState   string `json:"physical_state"`
+	LogicalState    string `json:"logical_state"`
+	LID             int32  `json:"lid"`
+	Path            string `json:"path"`
+	Tier            string `json:"tier"`
+	MTU             int32  `json:"mtu"`
+	ActiveSpeed     string `json:"active_speed"`
+	DName           int32  `json:"dname"`
+	Module          string `json:"module"`
+}
+
 type PKey struct {
 	Partition string `json:"partition"`
 	IPoIB     bool   `json:"ip_over_ib"`

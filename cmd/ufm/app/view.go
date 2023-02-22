@@ -26,18 +26,18 @@ import (
 	"github.com/openbce/kperf/pkg/ufm"
 )
 
-type describeCmdOptions struct {
+type viewCmdOptions struct {
 	PkeyStr string
 	ufm.IBNetwork
 }
 
-var describeCmdOpt = describeCmdOptions{}
+var viewCmdOpt = viewCmdOptions{}
 
-// describeCmd represents the list command
-var describeCmd = &cobra.Command{
-	Use:   "describe",
-	Short: "Describe one IB network in UFM",
-	Long:  `Describe one IB network in UFM`,
+// viewCmd represents the list command
+var viewCmd = &cobra.Command{
+	Use:   "view",
+	Short: "View the detail of a IB network in UFM",
+	Long:  `View the detail of a IB network in UFM`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ufmClient, err := ufm.NewUFM()
 		if err != nil {
@@ -45,7 +45,7 @@ var describeCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		pkey, err := ufm.ParsePkey(describeCmdOpt.PkeyStr)
+		pkey, err := ufm.ParsePkey(viewCmdOpt.PkeyStr)
 		if err != nil {
 			fmt.Printf("Failed to get IB network in UFM: %v\n", err)
 			os.Exit(1)
@@ -57,6 +57,8 @@ var describeCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		ibPorts, ufmErr := ufmClient.ListPort(ufm.Filter{GUIDs: ib.GUIDs})
+
 		fmt.Printf("%-15s: %s\n", "Name", ib.Name)
 		fmt.Printf("%-15s: 0x%x\n", "Pkey", ib.PKey)
 		fmt.Printf("%-15s: %t\n", "IPoIB", ib.IPOverIB)
@@ -65,12 +67,20 @@ var describeCmd = &cobra.Command{
 		fmt.Printf("%-15s: %.2f\n", "Rate Limit", ib.RateLimit)
 		fmt.Printf("%-15s: %d\n", "Service Level", ib.ServiceLevel)
 		fmt.Printf("%-15s: %s\n", "GUIDs", strings.Join(ib.GUIDs, ","))
+		fmt.Printf("%-15s:\n", "Ports")
+		if len(ibPorts) == 0 {
+			fmt.Printf("    %-20s%-20s%-20s%-10s%-20s%-20s\n", "Name", "GUID", "SystemID", "LID", "LogicalState", "PhysicalState")
+			for _, p := range ibPorts {
+				fmt.Printf("    %-20s%-20s%-20s%-10d%-20s%-20s\n", p.Name, p.GUID, p.SystemID, p.LID, p.LogicalState, p.PhysicalState)
+			}
+		}
+
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(describeCmd)
+	rootCmd.AddCommand(viewCmd)
 
-	describeCmd.Flags().StringVar(&describeCmdOpt.PkeyStr, "pkey", "", "The pkeys for IB network.")
+	viewCmd.Flags().StringVar(&viewCmdOpt.PkeyStr, "pkey", "", "The pkeys for IB network.")
 	createCmd.MarkFlagRequired("pkey")
 }
