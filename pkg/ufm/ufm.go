@@ -163,7 +163,7 @@ func (u *UFM) patchQoS(ib *IBNetwork, _ Strategy) *UFMError {
 		}
 	}
 
-	if _, err := u.client.Post(u.buildURL("/ufmRest/resources/pkeys/qos_conf"), qosData); err != nil {
+	if _, err := u.client.Put(u.buildURL("/ufmRest/resources/pkeys/qos_conf"), qosData); err != nil {
 		return &UFMError{
 			Code:    UnknownErr,
 			Message: fmt.Sprintf("failed to update PKey 0x%04X with error: %v", ib.PKey, err),

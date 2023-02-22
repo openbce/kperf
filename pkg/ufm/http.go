@@ -31,6 +31,7 @@ import (
 type UFMClient interface {
 	Get(url string) ([]byte, *UFMError)
 	Post(url string, body []byte) ([]byte, *UFMError)
+	Put(url string, body []byte) ([]byte, *UFMError)
 	Delete(url string) ([]byte, *UFMError)
 }
 
@@ -75,6 +76,11 @@ func (c *ufmclient) Get(url string) ([]byte, *UFMError) {
 func (c *ufmclient) Post(url string, body []byte) ([]byte, *UFMError) {
 	log.Debug().Msgf("Http ufmclient POST: url %s,  body %s", url, string(body))
 	return c.executeRequest(http.MethodPost, url, body)
+}
+
+func (c *ufmclient) Put(url string, body []byte) ([]byte, *UFMError) {
+	log.Debug().Msgf("Http ufmclient POST: url %s,  body %s", url, string(body))
+	return c.executeRequest(http.MethodPut, url, body)
 }
 
 func (c *ufmclient) Delete(url string) ([]byte, *UFMError) {

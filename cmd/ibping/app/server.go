@@ -14,12 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package app
 
 import (
-	"github.com/openbce/kperf/cmd/ibping/app"
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	app.Execute()
+type serverCmdOptions struct {
+}
+
+var serverCmdOpt = serverCmdOptions{}
+
+// serverCmd represents the server command
+var serverCmd = &cobra.Command{
+	Use:   "server",
+	Short: "Start a service with IB ports",
+	Long:  `Start a service with IB ports`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(serverCmd)
+
 }

@@ -14,12 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package app
 
 import (
-	"github.com/openbce/kperf/cmd/ibping/app"
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	app.Execute()
+type clientCmdOptions struct {
+}
+
+var clientCmdOpt = clientCmdOptions{}
+
+// clientCmd represents the client command
+var clientCmd = &cobra.Command{
+	Use:   "client",
+	Short: "Start a client to connect to the IB service",
+	Long:  `Start a client to connect to the IB service`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(clientCmd)
+
 }
