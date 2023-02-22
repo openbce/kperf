@@ -18,18 +18,11 @@ package ufm
 
 import (
 	"fmt"
-	"net"
-	"strings"
 )
 
-// isPKeyValid check if the pkey is in the valid (15bits long)
-func isPKeyValid(pkey int32) bool {
+// IsPKeyValid check if the pkey is in the valid (15bits long)
+func IsPKeyValid(pkey int32) bool {
 	return pkey == (pkey & 0x7fff)
-}
-
-// GuidToString return string guid from HardwareAddr
-func guidToString(guidAddr net.HardwareAddr) string {
-	return strings.Replace(guidAddr.String(), ":", "", -1)
 }
 
 func ParsePkey(pkeyStr string) (int32, error) {
@@ -38,7 +31,7 @@ func ParsePkey(pkeyStr string) (int32, error) {
 		return -1, err
 	}
 
-	if !isPKeyValid(pkey) {
+	if !IsPKeyValid(pkey) {
 		return -1, fmt.Errorf("invalid pkey")
 	}
 
@@ -46,7 +39,7 @@ func ParsePkey(pkeyStr string) (int32, error) {
 }
 
 func BuidPKey(pkey int32) (string, error) {
-	if !isPKeyValid(pkey) {
+	if !IsPKeyValid(pkey) {
 		return "", fmt.Errorf("invalid pkey")
 	}
 

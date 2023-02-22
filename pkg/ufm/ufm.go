@@ -95,7 +95,7 @@ func (u *UFM) Version() (string, *UFMError) {
 }
 
 func (u *UFM) GetIBNetwork(pkey int32) (*IBNetwork, *UFMError) {
-	if !isPKeyValid(pkey) {
+	if !IsPKeyValid(pkey) {
 		return nil, &UFMError{
 			Code:    InvalidPKeyErr,
 			Message: fmt.Sprintf("invalid pkey 0x%04X, out of range 0x0001 - 0xFFFE", pkey),
